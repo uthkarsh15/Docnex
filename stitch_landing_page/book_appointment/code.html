@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DOCNEX - Appointment Booking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#0f1729",
+                "background-light": "#f6f7f8",
+                "background-dark": "#14171e",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 py-4 lg:px-20 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-4 text-primary dark:text-slate-100">
+<div class="size-6">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">DOCNEX</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Appointments</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Medical Records</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Find Doctors</a>
+</nav>
+<div class="flex gap-3">
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg text-xs font-bold border border-green-200 dark:border-green-800">
+<span class="material-symbols-outlined text-sm">lock</span>
+                            SECURE SESSION
+                        </div>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 dark:bg-slate-800 text-primary dark:text-slate-100 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 rounded-full border-2 border-primary/10 bg-cover bg-center" data-alt="User profile avatar of a professional doctor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0tJH4gixa4tDGXEh5RQ3TC3_ZZwQooOPdwsPs24vXG6EujFEsJ8McRgD_h5qWqywoSZZ9VEBnLDxcEKO0LWp7VkMvBoxIzYK21Rxf-QK9siOHR9fnlwNXPTNPOV_GfD6DUHyYR1zAvH0z522cZk8FXojUSINn3r9RmdUnOrCaWggWJODDn7PL00fC4QAdxn-_LzdyKMAn33qEJD4317Dsl7Awj9QnGLtQeC-gBRP6ayiJ8mD9IrM3KsRDRh_EvdUf994D6ECgwJM");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center py-8 px-4 lg:px-20">
+<div class="w-full max-w-[1000px] flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col gap-2">
+<nav class="flex items-center gap-2 text-sm text-slate-500 mb-2">
+<span>Home</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Cardiology</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-semibold">Dr. Sarah Mitchell</span>
+</nav>
+<h1 class="text-3xl font-bold text-primary dark:text-white">Schedule Your Consultation</h1>
+<p class="text-slate-500 dark:text-slate-400">Review doctor availability and confirm your preferred time slot below.</p>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left: Calendar Selection -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+                                        Select Date
+                                    </h3>
+<div class="flex items-center gap-4 bg-primary/5 rounded-lg p-1">
+<button class="p-2 hover:bg-white rounded-md shadow-sm transition-all"><span class="material-symbols-outlined">chevron_left</span></button>
+<span class="font-bold text-sm min-w-[100px] text-center uppercase tracking-wider text-primary">October 2023</span>
+<button class="p-2 hover:bg-white rounded-md shadow-sm transition-all"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-1 text-center mb-2">
+<div class="text-[11px] font-bold text-slate-400 py-2">SUN</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">MON</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">TUE</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">WED</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">THU</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">FRI</div>
+<div class="text-[11px] font-bold text-slate-400 py-2">SAT</div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Empty cells for padding -->
+<div class="h-12"></div><div class="h-12"></div><div class="h-12"></div>
+<!-- Actual Days -->
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-400">1</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-400">2</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-400">3</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-400">4</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-bold bg-primary text-white shadow-lg">5</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">6</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">7</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">8</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">9</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">10</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">11</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">12</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">13</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">14</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">15</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">16</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">17</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">18</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">19</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">20</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">21</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">22</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">23</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">24</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">25</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">26</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">27</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">28</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">29</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">30</button>
+<button class="h-12 w-full flex items-center justify-center rounded-lg text-sm font-medium text-slate-800 hover:bg-primary/5">31</button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-primary/10 shadow-sm">
+<h3 class="font-bold text-lg flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">schedule</span>
+                                    Available Time Slots
+                                </h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<button class="group relative py-3 px-4 rounded-lg bg-primary text-white border-2 border-primary transition-all shadow-md">
+<div class="text-xs font-bold uppercase opacity-70">Morning</div>
+<div class="font-bold">09:00 AM</div>
+<span class="absolute top-1 right-1 material-symbols-outlined text-[14px]">check_circle</span>
+</button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Morning</div>
+                                        09:30 AM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Morning</div>
+                                        10:00 AM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Morning</div>
+                                        10:30 AM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Morning</div>
+                                        11:00 AM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Afternoon</div>
+                                        01:30 PM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-primary/5 text-primary border-2 border-transparent hover:border-primary/20 transition-all font-bold">
+<div class="text-xs font-bold uppercase text-slate-400">Afternoon</div>
+                                        02:00 PM
+                                    </button>
+<button class="py-3 px-4 rounded-lg bg-slate-100 text-slate-300 border-2 border-transparent cursor-not-allowed font-bold" disabled="">
+<div class="text-xs font-bold uppercase">Afternoon</div>
+                                        02:30 PM
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Right: Summary Sidebar -->
+<div class="flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="h-32 bg-primary flex items-center justify-center p-6 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-primary via-primary to-slate-800 opacity-50"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="size-20 rounded-full border-4 border-white/20 bg-cover bg-center mb-[-40px] shadow-xl" data-alt="Professional portrait of Dr. Sarah Mitchell" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMiONSUBhXuPiLxNnIa7896LpTkNfjF85dSMAGQKI62xXuTFC1kyumk2_1-F71WSlUwlFfKPchvnUCWZLqiw0eW7jNm1-Yk8naLydUjFuDDzxfqE1L70A5Xr9ZMvlLFoPFFpjBRNTyPgW595bO_3k0pJhFF9TqDUDRQfwyHmlY0rV47Je5DLwwYgT_bs6o56zuw4RUvlneKJmFWkWKYa55td7NkLkuWABh74bHPVLB1D00vKiGYG49b3rFTjzNLBZyiIU9bimObNg");'></div>
+</div>
+</div>
+<div class="pt-12 px-6 pb-6 text-center">
+<h4 class="font-bold text-xl text-primary">Dr. Sarah Mitchell</h4>
+<p class="text-sm text-slate-500 mb-4 font-medium uppercase tracking-wider">Senior Cardiologist</p>
+<div class="flex items-center justify-center gap-2 mb-6">
+<div class="flex text-yellow-500">
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined fill-1">star</span>
+<span class="material-symbols-outlined">star</span>
+</div>
+<span class="text-sm font-bold text-slate-600">(4.8/5)</span>
+</div>
+<div class="border-t border-slate-100 dark:border-slate-800 pt-6 space-y-4 text-left">
+<div class="flex justify-between items-center">
+<span class="text-slate-500 text-sm">Appointment Date</span>
+<span class="text-primary font-bold">Oct 5, 2023</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-slate-500 text-sm">Selected Time</span>
+<span class="text-primary font-bold">09:00 AM</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-slate-500 text-sm">Consultation Fee</span>
+<span class="text-primary font-bold">$120.00</span>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-lg font-bold mt-8 hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                                        Confirm Appointment
+                                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="text-[10px] text-slate-400 mt-4 px-4">By clicking confirm, you agree to DOCNEX medical service terms and privacy policy.</p>
+</div>
+</div>
+<div class="bg-blue-50 dark:bg-slate-800/50 p-6 rounded-xl border border-blue-100 dark:border-slate-700">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-blue-600">info</span>
+<div>
+<h5 class="text-sm font-bold text-blue-900 dark:text-blue-100">Need immediate help?</h5>
+<p class="text-xs text-blue-700 dark:text-blue-200 mt-1">If this is an emergency, please call 911 or visit the nearest emergency department.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- Hidden Confirmation Modal Backdrop (Demonstrating UI structure) -->
+<div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+<div class="bg-white dark:bg-background-dark w-full max-w-[480px] rounded-2xl shadow-2xl overflow-hidden animate-fade-in">
+<div class="p-8 flex flex-col items-center text-center">
+<div class="size-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-4xl">check_circle</span>
+</div>
+<h2 class="text-2xl font-bold text-primary dark:text-white mb-2">Appointment Scheduled!</h2>
+<p class="text-slate-500 mb-8">Your session with Dr. Mitchell is confirmed for <br/><span class="font-bold text-primary">October 5, 2023 at 09:00 AM</span>.</p>
+<div class="w-full space-y-3">
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold">Add to Calendar</button>
+<button class="w-full bg-slate-100 text-slate-600 py-4 rounded-xl font-bold">View Appointment Details</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

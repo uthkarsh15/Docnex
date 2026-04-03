@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DOCNEX - Recommended Doctors</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f1729",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#14171e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary dark:text-slate-100">
+<div class="size-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">DOCNEX</h2>
+</div>
+<div class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary/70 transition-colors" href="#">Find Doctors</a>
+<a class="text-sm font-medium leading-normal hover:text-primary/70 transition-colors" href="#">My Appointments</a>
+<a class="text-sm font-medium leading-normal hover:text-primary/70 transition-colors" href="#">Records</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden sm:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-500 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-slate-800 focus:ring-0 h-full placeholder:text-slate-500 px-4 rounded-r-lg pl-2 text-base font-normal" placeholder="Search doctors, clinics..." value=""/>
+</div>
+</label>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-200 dark:border-slate-700" data-alt="User profile avatar portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_ixJfbZ5i9xfkgyj2eiFYMF7dltCN_iL3GPr7mA21TVUk2ZPqSsBGJGQqM9sVsKyVxPVyXRVTfLXMSS5RTmaqPnLDqpmN30C0ZzszWsyxmVg2ltdOxt1YQDCWSs60uPrE5TULTMDQ07TOTbRjLkgbXY0g14SKvbnNArKvlL7lp1DpVquPG83z9VEupM4f1FqellX1WWQUDlG-8mkjdYyZgY-3_GxtHhtilDbONgKBQ9AH4wUc5jmi0VJILeZlxK4HEVeC5MfeYzY");'></div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center">
+<div class="layout-content-container flex flex-col max-w-[960px] w-full px-4 md:px-10 py-8">
+<!-- Hero Section -->
+<div class="flex flex-col gap-3 mb-8">
+<h1 class="text-slate-900 dark:text-slate-100 text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Recommended for You</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg font-normal leading-normal">Top specialists curated based on your health profile and recent activity.</p>
+</div>
+<!-- Filters -->
+<div class="flex gap-3 pb-6 overflow-x-auto no-scrollbar">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="text-sm font-medium">All Specializations</span>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="text-sm font-medium">Available Today</span>
+<span class="material-symbols-outlined text-lg">today</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="text-sm font-medium">Rating 4.5+</span>
+<span class="material-symbols-outlined text-lg">star</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-slate-800 px-4 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="text-sm font-medium">Experience: 10+ yrs</span>
+<span class="material-symbols-outlined text-lg">military_tech</span>
+</button>
+</div>
+<!-- Doctor Recommendation Cards -->
+<div class="flex flex-col gap-6">
+<!-- Doctor Card 1 -->
+<div class="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-4 md:p-6 flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-48 h-48 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Professional female doctor in clinical setting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCpidAfuou6tj5c1QVcU33I_xaPZl9_z4Niqs4qaJsolPBV5YBxIBnrGw7pO6TUxQ1IslPPVpbSuiniOJtDP6lH2RVFqqS3swxd2Tsr4aSCRFHzZLQI5taxZJhrEendbywaLBMuihBwmAucMRBFj53QpkQ0VTS524innSTRAwja2WSaQNlBkHoDyZKsntdkbNbcDMCbbUhPCcRPcXkAisjVjLbBKv2IbjQ_bvBolE1E2K1kQcwFRb70PSB6zmqrW0qVcXqHaGXKcSI");'></div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">98% Match</span>
+<span class="flex items-center gap-1 text-amber-500 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">star</span> 4.9 (124 reviews)
+                                            </span>
+</div>
+<h3 class="text-xl font-bold">Dr. Sarah Jenkins</h3>
+<p class="text-slate-600 dark:text-slate-400 font-medium">Cardiologist • 15 Years Experience</p>
+<div class="flex items-center gap-2 text-slate-500 text-sm mt-2">
+<span class="material-symbols-outlined text-lg">location_on</span>
+<span>Central Medical Plaza, NY</span>
+</div>
+<div class="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-medium">
+<span class="material-symbols-outlined text-lg">event_available</span>
+<span>Available Today, 2:30 PM</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">Book Appointment</button>
+<button class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">View Profile</button>
+</div>
+</div>
+</div>
+<!-- Why Recommended Expandable Section -->
+<details class="group border-t border-slate-100 dark:border-slate-800">
+<summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="text-sm font-semibold flex items-center gap-2 text-primary dark:text-slate-300">
+<span class="material-symbols-outlined text-lg">info</span> Why Recommended?
+                                    </span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 pt-2 text-sm text-slate-600 dark:text-slate-400 space-y-3">
+<p>Based on your recent heart rate data from wearable devices and your history of hypertension, Dr. Jenkins is one of our top-rated cardiology specialists with expertise in preventative care.</p>
+<ul class="list-disc list-inside space-y-1">
+<li>Specializes in cardiovascular disease management</li>
+<li>High patient satisfaction for similar cases</li>
+<li>Accepts your primary insurance (Aetna)</li>
+</ul>
+</div>
+</details>
+</div>
+<!-- Doctor Card 2 -->
+<div class="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-4 md:p-6 flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-48 h-48 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Experienced male physician in lab coat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBKhJaWgAA3FUqDmsNVpYyaxiwNKAsXiPGfbuIb4k4AFkcb3RESwBXQxRYjYWwv0Ri-7CdpOpedaDblmY0Iuod3Hx3pSkW0eK4TbukVrWfad4T-R4E2lLvG9o0C30zCDUWoD0A09DTzutzmT_QYLtlH0Pn5MeY-FBiITwNdgcv5zR3W6pITerYpFYfkWLLRwzFvfzjbT_e5I47VagaV25viRtQpmRNjVh6flS297j-qBaEwFeAdVpWy8LPeVe-B9Ti6zGQUkHkW-4k");'></div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">94% Match</span>
+<span class="flex items-center gap-1 text-amber-500 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">star</span> 4.8 (210 reviews)
+                                            </span>
+</div>
+<h3 class="text-xl font-bold">Dr. Michael Chen</h3>
+<p class="text-slate-600 dark:text-slate-400 font-medium">Dermatologist • 12 Years Experience</p>
+<div class="flex items-center gap-2 text-slate-500 text-sm mt-2">
+<span class="material-symbols-outlined text-lg">location_on</span>
+<span>Riverside Specialty Clinic, NY</span>
+</div>
+<div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
+<span class="material-symbols-outlined text-lg">event</span>
+<span>Next Available: Tuesday, Oct 24</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">Book Appointment</button>
+<button class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">View Profile</button>
+</div>
+</div>
+</div>
+<details class="group border-t border-slate-100 dark:border-slate-800">
+<summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="text-sm font-semibold flex items-center gap-2 text-primary dark:text-slate-300">
+<span class="material-symbols-outlined text-lg">info</span> Why Recommended?
+                                    </span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 pt-2 text-sm text-slate-600 dark:text-slate-400 space-y-3">
+<p>Recommended based on your recent inquiry about skin allergies and proximity to your office location.</p>
+<ul class="list-disc list-inside space-y-1">
+<li>Expert in contact dermatitis and allergies</li>
+<li>Fluent in English and Mandarin</li>
+<li>High success rate for pediatric dermatology</li>
+</ul>
+</div>
+</details>
+</div>
+<!-- Doctor Card 3 -->
+<div class="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="p-4 md:p-6 flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-48 h-48 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Smiling female medical professional" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLWfN43M8w5Z3u4DzoUvFSzS-WtU2kkCV9IYz2xVA_lgFXQPVYgHdFMoLQfd74wNEf3OAD5JdzCdGOoMI-23bjWfp3LJkv2wJ_r27vTrQZYNL_3OGuieWa0L0M7wpMhpmkHsjej406fIjmmVBdUUc0b9VhjTkM8dlob4fiUP-AvuPxuFIosd2gsIOmkhrkf4MIb7FPPtVNrwezDxfr-7NBTrf0jcEFSLrVBgrSkyNnc-UQVMRr2BCCXBez5uwloUa6FpVrh8-Ezk8");'></div>
+<div class="flex flex-col flex-1 justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wider">91% Match</span>
+<span class="flex items-center gap-1 text-amber-500 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">star</span> 4.7 (89 reviews)
+                                            </span>
+</div>
+<h3 class="text-xl font-bold">Dr. Elena Rodriguez</h3>
+<p class="text-slate-600 dark:text-slate-400 font-medium">Neurologist • 10 Years Experience</p>
+<div class="flex items-center gap-2 text-slate-500 text-sm mt-2">
+<span class="material-symbols-outlined text-lg">location_on</span>
+<span>NeuroHealth Institute, Brooklyn</span>
+</div>
+<div class="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-medium">
+<span class="material-symbols-outlined text-lg">event_available</span>
+<span>Available Tomorrow</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="bg-primary text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">Book Appointment</button>
+<button class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">View Profile</button>
+</div>
+</div>
+</div>
+<details class="group border-t border-slate-100 dark:border-slate-800">
+<summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="text-sm font-semibold flex items-center gap-2 text-primary dark:text-slate-300">
+<span class="material-symbols-outlined text-lg">info</span> Why Recommended?
+                                    </span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-6 pb-6 pt-2 text-sm text-slate-600 dark:text-slate-400 space-y-3">
+<p>Recommended due to your recent symptoms of recurring migraines and sleep disturbances.</p>
+<ul class="list-disc list-inside space-y-1">
+<li>Board-certified in Headache Medicine</li>
+<li>Integrative approach to chronic pain</li>
+<li>High patient retention rate</li>
+</ul>
+</div>
+</details>
+</div>
+</div>
+<!-- Pagination or Load More -->
+<div class="mt-12 flex justify-center">
+<button class="flex items-center gap-2 px-8 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                            Load More Recommendations
+                            <span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 flex justify-around py-2 px-4 z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary dark:text-slate-100" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="text-[10px] font-medium">Doctors</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-medium">Book</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-medium">Records</span>
+</a>
+</nav>
+<footer class="mt-auto py-10 px-6 md:px-10 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-[960px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl text-primary dark:text-slate-100">medical_services</span>
+<span class="font-bold">DOCNEX</span>
+</div>
+<div class="flex gap-8 text-sm text-slate-500">
+<a class="hover:underline" href="#">Privacy Policy</a>
+<a class="hover:underline" href="#">Terms of Service</a>
+<a class="hover:underline" href="#">Contact Support</a>
+</div>
+<p class="text-xs text-slate-400">© 2024 DOCNEX Health Tech Inc.</p>
+</div>
+</footer>
+</div>
+</div>
+</body></html>
