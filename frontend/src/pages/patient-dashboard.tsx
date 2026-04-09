@@ -1,68 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
-import apiClient from '../api/client';
+import Sidebar from '../components/sidebar';
+import { useSymptomAnalysis } from '../hooks/use-symptom-analysis';
 
-interface DoctorRec {
-    userId: string;
-    fullName: string;
-    specialization: string;
-    experienceYears: number;
-    consultationFee: number;
-    location: string;
-    bio: string;
-    isVerified: boolean;
-    rating: number;
-    matchRate?: string;
-}
-
+/**
+ * Reverted to original PatientDashboard UI as per user request.
+ * Kept the extracted useSymptomAnalysis hook for business logic.
+ * Restored the original inline layout, CSS classes, and typography.
+ * Fixed: Added latest report summary card, connected to AI Report Analysis.
+ */
 const PatientDashboard: React.FC = () => {
     const navigate = useNavigate();
-    const [symptom, setSymptom] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [recommendations, setRecommendations] = useState<DoctorRec[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const [profileDoctor, setProfileDoctor] = useState<DoctorRec | null>(null);
+    const {
+        symptom,
+        setSymptom,
+        isLoading,
+        recommendations,
+        displayDoctors,
+        error,
+        selectedDoctor,
+        setSelectedDoctor,
+        handleAnalyze
+    } = useSymptomAnalysis();
 
-    const handleAnalyze = async (e?: React.FormEvent) => {
-        if (e) e.preventDefault();
-        if (!symptom) return;
+    // Load latest analysis from sessionStorage if available
+    const [latestAnalysis, setLatestAnalysis] = useState<any>(null);
+    const [latestDoctors, setLatestDoctors] = useState<any[]>([]);
 
-        setLoading(true);
-        setError(null);
+    useEffect(() => {
         try {
-            const response = await apiClient.get('/doctors/recommendations/symptom', {
-                params: { symptom, location: 'New York' }
-            });
-            const data = response.data.map((d: any, i: number) => ({
-                ...d,
-                matchRate: `${98 - i * i}% Match`
-            }));
-            setRecommendations(data);
-        } catch (err) {
-            console.error('Recommendation error:', err);
-            setError('Could not fetch recommendations at this time.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const defaultDoctors: DoctorRec[] = [
-        {
-            fullName: "Dr. Sarah Jenkins",
-            specialization: "Cardiologist",
-            experienceYears: 15,
-            location: "Central Medical Plaza, NY",
-            matchRate: "98% Match",
-            rating: 4.9,
-            userId: "mock1",
-            consultationFee: 120,
-            bio: "Board-certified cardiologist with 15 years of experience specializing in interventional cardiology, heart failure management, and preventive cardiovascular medicine. Published researcher with 40+ peer-reviewed papers.",
-            isVerified: true,
-        }
-    ];
-
-    const displayDoctors = recommendations.length > 0 ? recommendations : defaultDoctors;
+            const savedAnalysis = sessionStorage.getItem('latestAnalysis');
+            const savedDoctors = sessionStorage.getItem('latestDoctors');
+            if (savedAnalysis) setLatestAnalysis(JSON.parse(savedAnalysis));
+            if (savedDoctors) setLatestDoctors(JSON.parse(savedDoctors));
+        } catch { /* ignore parse errors */ }
+    }, []);
 
     return (
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-12 font-display">
@@ -75,8 +47,39 @@ const PatientDashboard: React.FC = () => {
                         <p className="text-slate-600 dark:text-slate-400 text-lg font-normal">Enter symptoms for AI-powered specialist matching.</p>
                     </div>
 
-                    {/* Search Bar */}
-                    <form className="flex w-full gap-3" onSubmit={handleAnalyze}>
+                    {/* Latest Report Summary Card */}
+                    {latestAnalysis && (
+                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+                            <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary text-lg">lab_profile</span>
+                                    <h3 className="text-sm font-bold text-primary dark:text-white uppercase tracking-wider">Latest Report Analysis</h3>
+                                </div>
+                                <button onClick={() => navigate('/patient/report-analysis')} className="text-[10px] font-bold text-primary hover:underline bg-transparent border-none cursor-pointer uppercase tracking-wider">View Full Report →</button>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                    <div><span className="text-slate-400 font-bold uppercase text-[10px]">Patient</span><p className="font-bold dark:text-white text-sm mt-0.5">{latestAnalysis.patientName}</p></div>
+                                    <div><span className="text-slate-400 font-bold uppercase text-[10px]">Severity</span><p className={`font-bold text-sm mt-0.5 ${latestAnalysis.severity === 'severe' ? 'text-red-500' : latestAnalysis.severity === 'moderate' ? 'text-amber-500' : 'text-emerald-500'}`}>{latestAnalysis.severity}</p></div>
+                                    <div><span className="text-slate-400 font-bold uppercase text-[10px]">Urgency</span><p className="font-bold dark:text-white text-sm mt-0.5">{latestAnalysis.urgency}</p></div>
+                                    <div><span className="text-slate-400 font-bold uppercase text-[10px]">Specialist</span><p className="font-bold text-primary text-sm mt-0.5">{latestAnalysis.recommendedSpecialistType || 'General'}</p></div>
+                                </div>
+                                {latestDoctors.length > 0 && (
+                                    <div className="flex items-center gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recommended:</span>
+                                        <div className="flex gap-2 flex-wrap">
+                                            {latestDoctors.slice(0, 3).map((doc: any) => (
+                                                <span key={doc.id} className="text-xs font-bold bg-primary/10 text-primary px-2.5 py-1 rounded-full">{doc.name}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Search Bar - Inline logic restored to original UI */}
+                    <form className="flex w-full gap-3" onSubmit={(e) => handleAnalyze(e as any)}>
                         <div className="flex flex-1 items-stretch rounded-xl h-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm focus-within:ring-2 focus-within:ring-primary/20 transition-all">
                             <div className="text-slate-500 flex items-center justify-center pl-4">
                                 <span className="material-symbols-outlined text-2xl">psychology</span>
@@ -89,10 +92,10 @@ const PatientDashboard: React.FC = () => {
                             />
                         </div>
                         <button
-                            disabled={loading || !symptom.trim()}
+                            disabled={isLoading || !symptom.trim()}
                             className="bg-primary text-white px-8 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg shadow-primary/20 flex items-center gap-2 disabled:opacity-50"
                         >
-                            {loading ? (
+                            {isLoading ? (
                                 <><span className="material-symbols-outlined animate-spin text-sm">progress_activity</span> Analyzing...</>
                             ) : (
                                 <>Analyze Symptoms <span className="material-symbols-outlined">search</span></>
@@ -107,7 +110,7 @@ const PatientDashboard: React.FC = () => {
                                 <span className="material-symbols-outlined">error</span>
                                 <span className="text-sm font-medium">{error}</span>
                             </div>
-                            <button onClick={handleAnalyze} className="text-xs font-bold text-red-600 hover:underline uppercase tracking-wider">Retry</button>
+                            <button onClick={(e) => handleAnalyze(e as any)} className="text-xs font-bold text-red-600 hover:underline uppercase tracking-wider">Retry</button>
                         </div>
                     )}
 
@@ -157,7 +160,7 @@ const PatientDashboard: React.FC = () => {
                                                     Book Appointment
                                                 </button>
                                                 <button
-                                                    onClick={() => setProfileDoctor(doc)}
+                                                    onClick={() => setSelectedDoctor(doc)}
                                                     className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                                                 >
                                                     View Profile
@@ -186,8 +189,14 @@ const PatientDashboard: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Footer Stats — C2: Dynamic from context */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 border-t border-slate-100 dark:border-slate-800">
+                        <button onClick={() => navigate('/patient/report-analysis')} className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl text-center hover:shadow-md hover:border-primary/20 border border-transparent transition-all cursor-pointer">
+                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">AI Analysis</p>
+                            <div className="text-2xl font-black text-primary dark:text-white">
+                                <span className="material-symbols-outlined text-3xl">psychology</span>
+                            </div>
+                            <p className="text-[10px] text-slate-400 mt-1">Analyse Report →</p>
+                        </button>
                         <button onClick={() => navigate('/patient/upload')} className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl text-center hover:shadow-md hover:border-primary/20 border border-transparent transition-all cursor-pointer">
                             <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Records Secured</p>
                             <div className="text-2xl font-black text-primary dark:text-white">12</div>
@@ -198,33 +207,28 @@ const PatientDashboard: React.FC = () => {
                             <div className="text-2xl font-black text-primary dark:text-white">{displayDoctors.length > 1 ? displayDoctors.length : 4}</div>
                             <p className="text-[10px] text-slate-400 mt-1">View history →</p>
                         </button>
-                        <div className="p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl text-center border border-transparent">
-                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">AI Searches</p>
-                            <div className="text-2xl font-black text-primary dark:text-white">{recommendations.length > 0 ? recommendations.length : '—'}</div>
-                            <p className="text-[10px] text-slate-400 mt-1">{recommendations.length > 0 ? 'Results found' : 'Search above'}</p>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Doctor Profile Modal */}
-            {profileDoctor && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setProfileDoctor(null)}>
+            {/* Doctor Profile Modal Restored to original layout */}
+            {selectedDoctor && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setSelectedDoctor(null)}>
                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md p-8 relative max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                        <button onClick={() => setProfileDoctor(null)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                        <button onClick={() => setSelectedDoctor(null)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
                             <span className="material-symbols-outlined">close</span>
                         </button>
                         <div className="text-center mb-6">
                             <div className="size-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
                                 <span className="material-symbols-outlined text-4xl text-slate-300">person</span>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">{profileDoctor.fullName}</h3>
-                            <p className="text-sm text-slate-500 font-medium">{profileDoctor.specialization}</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">{selectedDoctor.fullName}</h3>
+                            <p className="text-sm text-slate-500 font-medium">{selectedDoctor.specialization}</p>
                             <div className="flex items-center justify-center gap-2 mt-2">
                                 <span className="flex items-center gap-1 text-amber-500 text-sm font-bold">
-                                    <span className="material-symbols-outlined text-sm">star</span> {profileDoctor.rating}
+                                    <span className="material-symbols-outlined text-sm">star</span> {selectedDoctor.rating}
                                 </span>
-                                {profileDoctor.isVerified && (
+                                {selectedDoctor.isVerified && (
                                     <span className="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">VERIFIED</span>
                                 )}
                             </div>
@@ -232,27 +236,27 @@ const PatientDashboard: React.FC = () => {
                         <div className="space-y-4 text-sm">
                             <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Experience</span>
-                                <p className="text-slate-900 dark:text-white font-medium mt-1">{profileDoctor.experienceYears} Years</p>
+                                <p className="text-slate-900 dark:text-white font-medium mt-1">{selectedDoctor.experienceYears} Years</p>
                             </div>
                             <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Location</span>
-                                <p className="text-slate-900 dark:text-white font-medium mt-1">{profileDoctor.location}</p>
+                                <p className="text-slate-900 dark:text-white font-medium mt-1">{selectedDoctor.location}</p>
                             </div>
-                            {profileDoctor.consultationFee && (
+                            {selectedDoctor.consultationFee && (
                                 <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Consultation Fee</span>
-                                    <p className="text-slate-900 dark:text-white font-medium mt-1">${profileDoctor.consultationFee}</p>
+                                    <p className="text-slate-900 dark:text-white font-medium mt-1">${selectedDoctor.consultationFee}</p>
                                 </div>
                             )}
-                            {profileDoctor.bio && (
+                            {selectedDoctor.bio && (
                                 <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">About</span>
-                                    <p className="text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">{profileDoctor.bio}</p>
+                                    <p className="text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">{selectedDoctor.bio}</p>
                                 </div>
                             )}
                         </div>
                         <button
-                            onClick={() => { setProfileDoctor(null); navigate(`/patient/book/${profileDoctor.userId}`); }}
+                            onClick={() => { setSelectedDoctor(null); navigate(`/patient/book/${selectedDoctor.userId}`); }}
                             className="w-full bg-primary text-white font-bold py-3 rounded-lg mt-6 hover:bg-primary/90 transition-all"
                         >
                             Book Appointment

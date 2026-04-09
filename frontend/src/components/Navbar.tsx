@@ -79,6 +79,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
         }
         return [
             { to: '/patient', label: 'Dashboard' },
+            { to: '/patient/report-analysis', label: 'AI Analysis' },
             { to: '/patient/book', label: 'Find Doctors' },
             { to: '/patient/upload', label: 'Records' },
         ];

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Reverted to original LandingPage UI as per user request.
+ * Kept kebab-case filename as per naming convention cleanup rule.
+ */
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
     const [demoModalOpen, setDemoModalOpen] = useState(false);
@@ -10,7 +14,6 @@ const LandingPage: React.FC = () => {
     const handleDemoSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setDemoSubmitted(true);
-        // B9: Don't auto-close — let the user dismiss it themselves
     };
 
     const handleDemoClose = () => {
@@ -24,7 +27,6 @@ const LandingPage: React.FC = () => {
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    // B8: Feature card "Learn more" checks auth; if not logged in, show login prompt
     const handleFeatureClick = (link: string) => {
         const user = localStorage.getItem('user');
         if (user) {
@@ -97,7 +99,6 @@ const LandingPage: React.FC = () => {
                                     <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
                                 </div>
                                 <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
-                                    {/* B8: Goes to login if not authenticated */}
                                     <button
                                         onClick={() => handleFeatureClick(feature.link)}
                                         className="flex items-center gap-2 text-[#0f1729] dark:text-slate-100 text-sm font-bold no-underline bg-transparent border-none cursor-pointer p-0 hover:gap-3 transition-all"
@@ -138,30 +139,25 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Performance Panel — Task 5: Static mock data with Demo Mode badge */}
+            {/* Performance Panel */}
             <section className="py-20 bg-[#0f1729] text-white relative overflow-hidden" id="stats">
-                {/* Demo Mode Badge */}
                 <div className="absolute top-6 right-6 lg:right-20 z-10">
                     <div className="flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-300 px-4 py-2 rounded-full backdrop-blur-sm">
                         <span className="material-symbols-outlined text-sm">science</span>
                         <span className="text-[10px] font-black uppercase tracking-widest">Pre-launch Preview</span>
                     </div>
                 </div>
-                {/* Background decoration */}
                 <div className="absolute inset-0 opacity-[0.03]">
                     <div className="absolute top-10 left-10 w-64 h-64 border border-white rounded-full"></div>
                     <div className="absolute bottom-10 right-10 w-96 h-96 border border-white rounded-full"></div>
                 </div>
                 <div className="max-w-7xl mx-auto px-6 lg:px-20 relative z-10">
-                    {/* Section Header */}
                     <div className="text-center mb-16">
                         <p className="text-blue-400 text-xs font-black uppercase tracking-[0.2em] mb-3">Platform Metrics</p>
                         <h3 className="text-3xl lg:text-4xl font-black text-white">Performance at a Glance</h3>
                     </div>
 
-                    {/* Main Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                        {/* Stat Card 1: Uptime */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center backdrop-blur-sm hover:bg-white/[0.08] transition-all">
                             <div className="size-12 bg-emerald-500/15 rounded-xl flex items-center justify-center mx-auto mb-5">
                                 <span className="material-symbols-outlined text-emerald-400 text-2xl">verified_user</span>
@@ -174,7 +170,6 @@ const LandingPage: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Stat Card 2: Records */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center backdrop-blur-sm hover:bg-white/[0.08] transition-all">
                             <div className="size-12 bg-blue-500/15 rounded-xl flex items-center justify-center mx-auto mb-5">
                                 <span className="material-symbols-outlined text-blue-400 text-2xl">description</span>
@@ -187,7 +182,6 @@ const LandingPage: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Stat Card 3: Latency */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center backdrop-blur-sm hover:bg-white/[0.08] transition-all">
                             <div className="size-12 bg-purple-500/15 rounded-xl flex items-center justify-center mx-auto mb-5">
                                 <span className="material-symbols-outlined text-purple-400 text-2xl">speed</span>
@@ -201,12 +195,11 @@ const LandingPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Mock Chart Panel */}
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
                         <div className="flex items-center justify-between mb-8">
                             <div>
                                 <h4 className="text-lg font-bold text-white">Weekly API Performance</h4>
-                                <p className="text-xs text-slate-400 mt-1">Mock data • Updates automatically post-deployment</p>
+                                <p className="text-xs text-slate-400 mt-1">Mock data updates automatically</p>
                             </div>
                             <div className="flex items-center gap-6">
                                 <div className="flex items-center gap-2">
@@ -219,7 +212,6 @@ const LandingPage: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* Simple bar chart using divs — easily replaceable with a real chart library */}
                         <div className="flex items-end gap-3 h-40">
                             {[
                                 { day: 'Mon', requests: 85, success: 98 },
@@ -235,38 +227,21 @@ const LandingPage: React.FC = () => {
                                         <div
                                             className="flex-1 max-w-6 bg-blue-500/40 rounded-t-md transition-all hover:bg-blue-500/60"
                                             style={{ height: `${d.requests}%` }}
-                                            title={`${d.requests}% capacity`}
                                         ></div>
                                         <div
                                             className="flex-1 max-w-6 bg-emerald-500/40 rounded-t-md transition-all hover:bg-emerald-500/60"
                                             style={{ height: `${d.success}%` }}
-                                            title={`${d.success}% success`}
                                         ></div>
                                     </div>
                                     <span className="text-[10px] text-slate-500 font-bold uppercase">{d.day}</span>
                                 </div>
                             ))}
                         </div>
-                        {/* Summary row */}
-                        <div className="grid grid-cols-3 gap-6 mt-8 pt-6 border-t border-white/10">
-                            <div>
-                                <p className="text-xs text-slate-500 font-medium">Peak Requests/min</p>
-                                <p className="text-xl font-black text-white mt-1">12,847</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-medium">Error Rate (7d avg)</p>
-                                <p className="text-xl font-black text-emerald-400 mt-1">0.02%</p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-slate-500 font-medium">P99 Latency</p>
-                                <p className="text-xl font-black text-white mt-1">187ms</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Call to Action — D1: Differentiated label */}
+            {/* CTA Section */}
             <section className="py-24 bg-background-light dark:bg-background-dark">
                 <div className="max-w-5xl mx-auto px-6">
                     <div className="bg-slate-100 dark:bg-slate-900 rounded-[2rem] p-10 lg:p-20 text-center relative overflow-hidden">
@@ -276,7 +251,6 @@ const LandingPage: React.FC = () => {
                         <h2 className="text-slate-900 dark:text-slate-100 text-3xl lg:text-5xl font-black mb-6 relative z-10">Ready to transform your healthcare workflow?</h2>
                         <p className="text-slate-600 dark:text-slate-400 text-lg mb-10 max-w-xl mx-auto relative z-10">Join over 1,000 medical professionals who trust DOCNEX with their critical patient data.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                            {/* D1: Label differentiated from hero "Start Free Trial" */}
                             <button
                                 onClick={() => navigate('/login')}
                                 className="bg-[#0f1729] text-white px-10 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all"
@@ -294,7 +268,7 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Schedule Demo Modal — B9: No auto-close; user dismisses */}
+            {/* Demo Modal */}
             {demoModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={handleDemoClose}>
                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md p-8 relative" onClick={e => e.stopPropagation()}>
@@ -308,7 +282,6 @@ const LandingPage: React.FC = () => {
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Demo Scheduled!</h3>
                                 <p className="text-slate-500 text-sm mb-6">We'll send you a confirmation email with a calendar invite shortly.</p>
-                                {/* B9: User manually closes */}
                                 <button
                                     onClick={handleDemoClose}
                                     className="bg-primary text-white font-bold px-8 py-3 rounded-lg hover:bg-primary/90 transition-all"

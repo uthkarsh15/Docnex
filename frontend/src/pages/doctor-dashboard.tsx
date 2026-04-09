@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/sidebar';
 
 interface Appointment {
     id: string;
@@ -10,6 +10,11 @@ interface Appointment {
     status: string;
 }
 
+/**
+ * Reverted to original DoctorDashboard UI as per user request.
+ * Kept kebab-case filename as per naming convention cleanup rule.
+ * Updated sidebar import to match kebab-case rule.
+ */
 const DoctorDashboard: React.FC = () => {
     // Generate dynamic dates relative to today
     const today = new Date();
@@ -32,7 +37,6 @@ const DoctorDashboard: React.FC = () => {
 
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 3);
 
-    // Close action menu on outside click
     useEffect(() => {
         const handler = (e: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -46,7 +50,6 @@ const DoctorDashboard: React.FC = () => {
     const handleStatusChange = (id: string, newStatus: string) => {
         setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
         setActiveMenu(null);
-        // B5: Show contextual toast feedback
         if (newStatus === 'Confirmed') showToast('Appointment confirmed successfully');
         else if (newStatus === 'Completed') showToast('Appointment marked as completed');
         else if (newStatus === 'Pending') showToast('Appointment rescheduled — awaiting patient confirmation');
@@ -198,7 +201,6 @@ const DoctorDashboard: React.FC = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* Table Footer */}
                             <div className="px-6 py-3 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
                                 <span>Showing {displayedAppointments.length} of {appointments.length} appointments</span>
                                 <span>{confirmedCount} confirmed • {pendingCount} pending</span>
@@ -248,7 +250,6 @@ const DoctorDashboard: React.FC = () => {
                 </div>
             )}
 
-            {/* B5: Toast Notification */}
             {toast && (
                 <div className="fixed bottom-6 right-6 z-[100] bg-slate-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2">
                     <span className="material-symbols-outlined text-emerald-400 text-lg">check_circle</span>
@@ -259,7 +260,6 @@ const DoctorDashboard: React.FC = () => {
     );
 };
 
-// Sub-component for schedule rows
 const ScheduleRow: React.FC<{ day: string; defaultActive: boolean }> = ({ day, defaultActive }) => {
     const [active, setActive] = useState(defaultActive);
     return (

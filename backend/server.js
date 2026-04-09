@@ -2,30 +2,37 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const connectDB = require('./src/config/db');
-const apiRoutes = require('./src/routes/api');
+const connectDatabase = require('./src/config/database-config');
+const apiRouter = require('./src/routes/api-router');
 
+/**
+ * DocNex Backend Server
+ * Architecture: Service-Controller-Router with Mongoose.
+ */
 const app = express();
 
-// Connect to Database
-connectDB();
+// Database Connectivity
+connectDatabase();
 
-// Middleware
+// Core Middleware
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
-app.use('/api', apiRoutes);
+// Main API Routes
+app.use('/api', apiRouter);
 
-// Error Handling Middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+// Global Error Handler
+app.use((error, req, res, next) => {
+    console.error('Server Fault:', error.stack);
+    res.status(500).json({ 
+        error: 'A server fault occurred while processing your request.', 
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined 
+    });
 });
 
-const PORT = process.env.PORT || 5000;
+const APP_PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(APP_PORT, () => {
+    console.log(`[SERVER] Online on port ${APP_PORT}`);
 });

@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar.tsx';
-import Footer from './components/Footer.tsx';
-import LandingPage from './pages/LandingPage.tsx';
-import PatientDashboard from './pages/PatientDashboard.tsx';
-import DoctorDashboard from './pages/DoctorDashboard.tsx';
-import Login from './pages/Login.tsx';
-import UploadRecord from './pages/UploadRecord.tsx';
-import BookAppointment from './pages/BookAppointment.tsx';
+
+// Layout Components
+import Navbar from './components/navbar.tsx';
+import Footer from './components/footer.tsx';
+
+// Page Components
+import LandingPage from './pages/landing-page.tsx';
+import PatientDashboard from './pages/patient-dashboard.tsx';
+import DoctorDashboard from './pages/doctor-dashboard.tsx';
+import Login from './pages/login.tsx';
+import UploadRecord from './pages/upload-record.tsx';
+import BookAppointment from './pages/book-appointment.tsx';
+import ReportAnalysis from './pages/report-analysis.tsx';
+
 import {
   PatientAppointments,
   PatientVault,
@@ -15,12 +21,15 @@ import {
   DoctorPatients,
   DoctorSchedule,
   DoctorSettings,
-} from './pages/PlaceholderPages.tsx';
+} from './pages/placeholder-pages.tsx';
 
+/**
+ * Main Application Component
+ */
 const App: React.FC = () => {
   const [user, setUser] = useState<{ role: string; name: string } | null>(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
+    const savedValue = localStorage.getItem('user');
+    return savedValue ? JSON.parse(savedValue) : null;
   });
 
   useEffect(() => {
@@ -31,17 +40,21 @@ const App: React.FC = () => {
     }
   }, [user]);
 
-  // Detect system dark mode preference and apply 'dark' class to <html>
+  // Handle system dark mode preference
   useEffect(() => {
     const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const applyDark = (e: MediaQueryListEvent | MediaQueryList) => {
+    const updateTheme = (e: MediaQueryListEvent | MediaQueryList) => {
       document.documentElement.classList.toggle('dark', e.matches);
     };
-    applyDark(darkQuery);
-    darkQuery.addEventListener('change', applyDark);
-    return () => darkQuery.removeEventListener('change', applyDark);
+    
+    updateTheme(darkQuery);
+    darkQuery.addEventListener('change', updateTheme);
+    return () => darkQuery.removeEventListener('change', updateTheme);
   }, []);
 
+  /**
+   * Universal logout handler.
+   */
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('token');
@@ -53,12 +66,13 @@ const App: React.FC = () => {
     <Router>
       <div className="min-h-screen flex flex-col bg-background-light dark:bg-background-dark font-display">
         <Navbar user={user} onLogout={handleLogout} />
+        
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login onLogin={(u) => setUser(u)} />} />
 
-            {/* Protected Patient Routes */}
+            {/* Patient Routes */}
             <Route
               path="/patient"
               element={user?.role === 'PATIENT' ? <PatientDashboard /> : <Navigate to="/login" />}
@@ -83,8 +97,12 @@ const App: React.FC = () => {
               path="/patient/vault"
               element={user?.role === 'PATIENT' ? <PatientVault /> : <Navigate to="/login" />}
             />
+            <Route
+              path="/patient/report-analysis"
+              element={user?.role === 'PATIENT' ? <ReportAnalysis /> : <Navigate to="/login" />}
+            />
 
-            {/* Protected Doctor Routes */}
+            {/* Doctor Routes */}
             <Route
               path="/doctor"
               element={user?.role === 'DOCTOR' ? <DoctorDashboard /> : <Navigate to="/login" />}
@@ -109,6 +127,7 @@ const App: React.FC = () => {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
+
         <Footer />
       </div>
     </Router>

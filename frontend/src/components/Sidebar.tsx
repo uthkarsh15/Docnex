@@ -11,6 +11,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
     const patientLinks = [
         { label: 'Home', icon: 'home', path: '/patient' },
         { label: 'Upload Record', icon: 'cloud_upload', path: '/patient/upload' },
+        { label: 'AI Report Analysis', icon: 'psychology', path: '/patient/report-analysis' },
         { label: 'Find Doctors', icon: 'person_search', path: '/patient/book' },
         { label: 'My Appointments', icon: 'calendar_month', path: '/patient/appointments' },
         { label: 'Vault', icon: 'shield_lock', path: '/patient/vault' },
