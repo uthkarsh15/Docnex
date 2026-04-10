@@ -5,7 +5,7 @@ const apiRouter = express.Router();
 const authController = require('../controllers/auth-controller');
 const appointmentController = require('../controllers/appointment-controller');
 const recommendationController = require('../controllers/recommendation-controller');
-const reportController = require('../controllers/report-controller');
+
 
 // Middleware
 const authMiddleware = require('../middleware/auth-middleware');
@@ -16,10 +16,6 @@ const authMiddleware = require('../middleware/auth-middleware');
 apiRouter.post('/auth/register', authController.register);
 apiRouter.post('/auth/login', authController.login);
 
-/**
- * AI-powered Patient Report Analysis
- */
-apiRouter.post('/analyze-report', authMiddleware, reportController.analyze);
 
 /**
  * Doctor Recommendation and Search
