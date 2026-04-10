@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 // Layout Components
 import Navbar from './components/Navbar';
-import Footer from './components/footer';
+import Footer from './components/Footer';
 
 // Page Components
 import LandingPage from './pages/landing-page';
