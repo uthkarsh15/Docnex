@@ -19,8 +19,8 @@
       "destination": "backend/server.js"
     },
     {
-      "source": "/:match*",
-      "destination": "/frontend/:match*"
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
