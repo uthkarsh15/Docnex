@@ -33,6 +33,10 @@ app.use((error, req, res, next) => {
 
 const APP_PORT = process.env.PORT || 5000;
 
-app.listen(APP_PORT, () => {
-    console.log(`[SERVER] Online on port ${APP_PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(APP_PORT, () => {
+        console.log(`[SERVER] Online on port ${APP_PORT}`);
+    });
+}
+
+module.exports = app;
