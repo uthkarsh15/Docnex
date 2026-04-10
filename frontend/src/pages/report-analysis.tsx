@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/sidebar';
+import Sidebar from '../components/Sidebar';
 import { useReportAnalysis } from '../hooks/use-report-analysis';
 
 /**

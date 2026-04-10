@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // Layout Components
-import Navbar from './components/navbar.tsx';
-import Footer from './components/footer.tsx';
+import Navbar from './components/Navbar';
+import Footer from './components/footer';
 
 // Page Components
-import LandingPage from './pages/landing-page.tsx';
-import PatientDashboard from './pages/patient-dashboard.tsx';
-import DoctorDashboard from './pages/doctor-dashboard.tsx';
-import Login from './pages/login.tsx';
-import UploadRecord from './pages/upload-record.tsx';
-import BookAppointment from './pages/book-appointment.tsx';
-import ReportAnalysis from './pages/report-analysis.tsx';
+import LandingPage from './pages/landing-page';
+import PatientDashboard from './pages/patient-dashboard';
+import DoctorDashboard from './pages/doctor-dashboard';
+import Login from './pages/Login';
+import UploadRecord from './pages/upload-record';
+import BookAppointment from './pages/book-appointment';
+import ReportAnalysis from './pages/report-analysis';
 
 import {
   PatientAppointments,
@@ -21,7 +21,7 @@ import {
   DoctorPatients,
   DoctorSchedule,
   DoctorSettings,
-} from './pages/placeholder-pages.tsx';
+} from './pages/placeholder-pages';
 
 /**
  * Main Application Component
@@ -70,7 +70,7 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login onLogin={(u) => setUser(u)} />} />
+            <Route path="/login" element={<Login onLogin={(u: { role: string; name: string }) => setUser(u)} />} />
 
             {/* Patient Routes */}
             <Route

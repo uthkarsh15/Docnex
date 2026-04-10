@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Sidebar from '../components/sidebar';
+import Sidebar from '../components/Sidebar';
 
 interface PlaceholderPageProps {
     title: string;
