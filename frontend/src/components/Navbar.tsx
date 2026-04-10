@@ -92,9 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
             <div className="max-w-7xl mx-auto flex items-center justify-between whitespace-nowrap">
                 <div className="flex items-center gap-8">
                     <Link to="/" className="flex items-center gap-3 no-underline text-primary dark:text-slate-100">
-                        <div className="size-8 bg-primary dark:bg-slate-100 flex items-center justify-center rounded-lg text-white dark:text-primary">
-                            <span className="material-symbols-outlined text-2xl">database</span>
-                        </div>
+                        <img src="/logo.png" alt="DOCNEX" className="size-10 object-contain" />
                         <h2 className="text-xl font-bold tracking-tight uppercase">DOCNEX</h2>
                     </Link>
 

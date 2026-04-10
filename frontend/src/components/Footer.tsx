@@ -86,9 +86,7 @@ const Footer: React.FC = () => {
             <footer className="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 py-12 px-6 lg:px-20">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="flex items-center gap-3">
-                        <div className="size-6 bg-primary dark:bg-slate-100 flex items-center justify-center rounded text-white dark:text-primary">
-                            <span className="material-symbols-outlined text-sm">database</span>
-                        </div>
+                    <img src="/logo.png" alt="DOCNEX" className="size-8 object-contain" />
                         <h2 className="text-slate-900 dark:text-slate-100 text-lg font-bold tracking-tight uppercase">DOCNEX</h2>
                     </div>
                     <div className="flex gap-8 text-slate-500 dark:text-slate-400 text-sm font-medium">
