@@ -27,6 +27,7 @@ export function useAppointmentBooking() {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [isBookingInProgress, setIsBookingInProgress] = useState(false);
     const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
+    const [bookingError, setBookingError] = useState<string | null>(null);
 
     const targetDoctor = useMemo(() => 
         DOCTORS_DB.find(doc => doc.userId === doctorId) || DOCTORS_DB[0]
@@ -64,6 +65,8 @@ export function useAppointmentBooking() {
 
     const processFinalBooking = useCallback(() => {
         setIsBookingInProgress(true);
+        setBookingError(null);
+        
         // Simulate backend synchronization
         setTimeout(() => {
             setIsBookingInProgress(false);
@@ -101,6 +104,7 @@ export function useAppointmentBooking() {
         setIsConfirmModalOpen,
         isBookingInProgress,
         isBookingConfirmed,
+        bookingError,
         calendar: {
             daysInMonth,
             firstDayOffset,

@@ -5,7 +5,9 @@ import { DOCTORS_DB } from '../data/doctors';
 export interface DoctorRecommendation {
   userId: string;
   fullName: string;
+  name?: string;
   specialization: string;
+  department?: string;
   experienceYears: number;
   consultationFee: number;
   location: string;

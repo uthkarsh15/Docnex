@@ -31,7 +31,6 @@ const PatientDashboard: React.FC = () => {
         setSymptom,
         isLoading,
         recommendations,
-        error,
         selectedDoctor,
         setSelectedDoctor,
         handleAnalyze
@@ -195,7 +194,6 @@ const PatientDashboard: React.FC = () => {
                                     // Handle both recommendation and legacy doctor structures
                                     const name = doc.fullName || doc.name;
                                     const specialization = doc.specialization || doc.department;
-                                    const uid = doc.userId || (`mock-${idx}`);
                                     
                                     return (
                                         <div key={idx} className="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
