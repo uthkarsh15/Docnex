@@ -62,7 +62,7 @@ class AuthService {
             { expiresIn: '1d' }
         );
 
-        return token;
+        return { token, user: { id: user._id, role: user.role, name: user.fullName } };
     }
 }
 

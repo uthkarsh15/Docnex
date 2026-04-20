@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import apiClient from '../api/client';
 
 interface Appointment {
     id: string;
@@ -8,6 +9,14 @@ interface Appointment {
     time: string;
     type: string;
     status: string;
+}
+
+interface IncomingRequest {
+    _id: string;
+    patient: { _id: string; fullName: string; email: string };
+    slot: { startTime: string; endTime: string; doctor: { specialization: string } };
+    status: string;
+    createdAt: string;
 }
 
 /**
@@ -34,6 +43,39 @@ const DoctorDashboard: React.FC = () => {
     const [scheduleOpen, setScheduleOpen] = useState(false);
     const [toast, setToast] = useState<string | null>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+
+    // — Incoming Requests State —
+    const [incomingRequests, setIncomingRequests] = useState<IncomingRequest[]>([]);
+    const [incomingLoading, setIncomingLoading] = useState(true);
+
+    const fetchIncoming = async () => {
+        try {
+            const res = await apiClient.get('/appointments/incoming');
+            setIncomingRequests(res.data);
+        } catch {
+            // silently ignore — user may not be a doctor or no token
+        } finally {
+            setIncomingLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchIncoming();
+        const interval = setInterval(fetchIncoming, 30000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleRespond = async (appointmentId: string, status: 'CONFIRMED' | 'CANCELLED') => {
+        // Optimistic removal
+        setIncomingRequests(prev => prev.filter(r => r._id !== appointmentId));
+        try {
+            await apiClient.patch(`/appointments/${appointmentId}/respond`, { status });
+            showToast(status === 'CONFIRMED' ? 'Appointment accepted' : 'Appointment rejected');
+        } catch {
+            showToast('Failed to respond — please refresh');
+            fetchIncoming(); // revert on failure
+        }
+    };
 
     const displayedAppointments = showAll ? appointments : appointments.slice(0, 3);
 
@@ -71,6 +113,11 @@ const DoctorDashboard: React.FC = () => {
     const confirmedCount = appointments.filter(a => a.status === 'Confirmed').length;
     const pendingCount = appointments.filter(a => a.status === 'Pending').length;
 
+    const formatSlotTime = (iso: string) => {
+        const d = new Date(iso);
+        return d.toLocaleString('en-IN', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    };
+
     return (
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-12 font-display">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -102,6 +149,72 @@ const DoctorDashboard: React.FC = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                    {/* Incoming Appointment Requests — REAL DATA */}
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                Appointment Requests
+                            </h2>
+                            {incomingRequests.length > 0 && (
+                                <span className="text-[10px] font-black uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2 py-1 rounded">
+                                    {incomingRequests.length} pending
+                                </span>
+                            )}
+                        </div>
+
+                        {incomingLoading ? (
+                            <div className="p-8 text-center text-slate-400">
+                                <span className="material-symbols-outlined animate-spin text-2xl">progress_activity</span>
+                                <p className="text-sm mt-2">Loading requests...</p>
+                            </div>
+                        ) : incomingRequests.length === 0 ? (
+                            <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center">
+                                <span className="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600">inbox</span>
+                                <p className="text-sm text-slate-500 mt-2">No pending appointment requests</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {incomingRequests.map((req) => (
+                                    <div key={req._id} className="p-5 bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/50 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <div className="size-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">
+                                                    {req.patient.fullName.split(' ').map(n => n[0]).join('')}
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-slate-900 dark:text-white">{req.patient.fullName}</h4>
+                                                    <p className="text-xs text-slate-500">{req.patient.email}</p>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <span className="material-symbols-outlined text-sm text-slate-400">schedule</span>
+                                                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                                                            {formatSlotTime(req.slot.startTime)} — {new Date(req.slot.endTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleRespond(req._id, 'CONFIRMED')}
+                                                    className="px-5 py-2.5 bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-1.5 shadow-sm"
+                                                >
+                                                    <span className="material-symbols-outlined text-sm">check_circle</span>
+                                                    Accept
+                                                </button>
+                                                <button
+                                                    onClick={() => handleRespond(req._id, 'CANCELLED')}
+                                                    className="px-5 py-2.5 bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-red-500/20 transition-colors flex items-center gap-1.5"
+                                                >
+                                                    <span className="material-symbols-outlined text-sm">cancel</span>
+                                                    Reject
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Appointments Table */}

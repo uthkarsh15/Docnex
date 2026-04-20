@@ -5,7 +5,7 @@ import { auth, googleProvider } from '../config/firebase';
 import { signInWithPopup } from 'firebase/auth';
 
 interface LoginProps {
-    onLogin: (user: { role: string; name: string }) => void;
+    onLogin: (user: { id?: string; role: string; name: string }) => void;
 }
 
 /**
@@ -38,6 +38,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             const response = await apiClient.post('/auth/login', { email, password });
             const { token, user } = response.data;
 
+            // Fix 6: Always store in localStorage with consistent keys
+            localStorage.setItem('docnex_token', token);
+            localStorage.setItem('docnex_user', JSON.stringify(user));
+            // Legacy keys for backward compatibility
             if (rememberMe) {
                 localStorage.setItem('token', token);
             } else {
@@ -59,7 +63,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     };
 
     const handleMockLogin = (role: string, name: string) => {
-        onLogin({ role, name });
+        // Mock login doesn't have a real token or id, but still persist
+        const mockUser = { role, name };
+        localStorage.setItem('docnex_user', JSON.stringify(mockUser));
+        onLogin(mockUser);
         if (role === 'PATIENT') navigate('/patient');
         else navigate('/doctor');
     };
@@ -76,7 +83,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
             };
 
+            localStorage.setItem('docnex_token', await firebaseUser.getIdToken());
             localStorage.setItem('token', await firebaseUser.getIdToken());
+            localStorage.setItem('docnex_user', JSON.stringify(userData));
             onLogin(userData);
             navigate('/patient');
         } catch (err: any) {

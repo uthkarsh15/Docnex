@@ -10,11 +10,10 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
 
     const patientLinks = [
         { label: 'Home', icon: 'home', path: '/patient' },
-        { label: 'Upload Record', icon: 'cloud_upload', path: '/patient/upload' },
+        { label: 'Records', icon: 'cloud_upload', path: '/patient/upload' },
         { label: 'AI Report Analysis', icon: 'psychology', path: '/patient/report-analysis' },
         { label: 'Find Doctors', icon: 'person_search', path: '/patient/book' },
         { label: 'My Appointments', icon: 'calendar_month', path: '/patient/appointments' },
-        { label: 'Vault', icon: 'shield_lock', path: '/patient/vault' },
     ];
 
     const doctorLinks = [
@@ -28,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ role }) => {
     const links = role === 'PATIENT' ? patientLinks : doctorLinks;
 
     // D5: Sidebar card links to /patient/vault for patients, /doctor/settings for doctors
-    const cardLink = role === 'PATIENT' ? '/patient/vault' : '/doctor/settings';
+    const cardLink = role === 'PATIENT' ? '/patient/upload' : '/doctor/settings';
     const cardTitle = role === 'PATIENT' ? 'Secure Storage' : 'Need Help?';
     const cardDesc = role === 'PATIENT'
         ? 'HIPAA & GDPR Compliant Military-grade Encryption'

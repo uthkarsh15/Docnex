@@ -64,18 +64,7 @@ export const PatientAppointments: React.FC = () => (
     />
 );
 
-export const PatientVault: React.FC = () => (
-    <PlaceholderPage
-        role="PATIENT"
-        title="Medical Vault"
-        subtitle="Your immutable health record archive. Access to historical data will be enabled in the next release."
-        icon="shield_lock"
-        actions={[
-            { label: 'Upload Record', to: '/patient/upload', icon: 'cloud_upload' },
-            { label: 'Analyse New Report', to: '/patient/report-analysis', icon: 'psychology' },
-        ]}
-    />
-);
+
 
 export const DoctorAppointments: React.FC = () => (
     <PlaceholderPage

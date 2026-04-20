@@ -4,13 +4,13 @@ const AppointmentSlot = require('../models/AppointmentSlot');
 const User = require('../models/User');
 
 class AppointmentService {
-    async bookAppointment(slotId, patientEmail) {
+    async bookAppointment(slotId, patientId) {
         const session = await mongoose.startSession();
         session.startTransaction();
 
         try {
-            // 1. Fetch Patient
-            const patient = await User.findOne({ email: patientEmail }).session(session);
+            // 1. Fetch Patient by ID (passed from auth middleware)
+            const patient = await User.findById(patientId).session(session);
             if (!patient) {
                 throw new Error('Patient not found');
             }
@@ -34,7 +34,7 @@ class AppointmentService {
             const appointment = new Appointment({
                 patient: patient._id,
                 slot: slot._id,
-                status: 'CONFIRMED'
+                status: 'PENDING'
             });
 
             const savedAppointment = await appointment.save({ session });

@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import apiClient from '../api/client';
 
 export interface UploadedFile {
     id: string;
@@ -8,6 +9,8 @@ export interface UploadedFile {
     isAnalyzing?: boolean;
     analysisResult?: string;
     isViewOpen?: boolean;
+    /** When true the inline delete-confirm UI is shown */
+    isDeleteConfirmOpen?: boolean;
 }
 
 export interface UploadingFile {
@@ -19,6 +22,7 @@ export interface UploadingFile {
 
 /**
  * Custom hook for handling multi-file uploads and simulation.
+ * Fix 1: Added deleteFile with inline confirmation support.
  */
 export function useFileUpload() {
     const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
@@ -93,12 +97,38 @@ export function useFileUpload() {
         );
     }, []);
 
+    /**
+     * Fix 1: Show/hide inline delete confirmation for a file.
+     */
+    const toggleDeleteConfirm = useCallback((fileId: string) => {
+        setUploadedFiles(prev =>
+            prev.map(f => f.id === fileId ? { ...f, isDeleteConfirmOpen: !f.isDeleteConfirmOpen } : f)
+        );
+    }, []);
+
+    /**
+     * Fix 1: Confirm deletion — call backend then remove from local state (optimistic).
+     */
+    const confirmDelete = useCallback(async (fileId: string) => {
+        // Optimistic: remove from state immediately
+        setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+
+        // Attempt backend deletion (best effort — records may be client-only)
+        try {
+            await apiClient.delete(`/records/${fileId}`);
+        } catch {
+            // Silently ignore — record may not exist on backend yet
+        }
+    }, []);
+
     return {
         uploadingFiles,
         uploadedFiles,
         startUpload,
         cancelUpload,
         analyzeFile,
-        toggleFileView
+        toggleFileView,
+        toggleDeleteConfirm,
+        confirmDelete
     };
 }

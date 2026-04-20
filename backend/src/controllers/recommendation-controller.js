@@ -1,6 +1,10 @@
 const RecommendationService = require('../services/RecommendationService');
 
 class RecommendationController {
+    constructor() {
+        this.service = RecommendationService;
+    }
+
     async recommend(req, res) {
         try {
             const { specialization, location } = req.query;

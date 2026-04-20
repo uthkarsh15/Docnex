@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/docnex');
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (err) {
-        console.error(`Error: ${err.message}`);
-        process.exit(1);
-    }
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('[DB] Connected to MongoDB Atlas');
+  } catch (error) {
+    console.error('[DB] Connection failed:', error.message);
+    process.exit(1);
+  }
 };
 
-module.exports = connectDB;
+module.exports = connectDatabase;

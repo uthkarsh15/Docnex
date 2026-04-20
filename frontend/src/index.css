@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Fix layout shift: always reserve scrollbar space */
+html {
+  overflow-y: scroll;
+}
+
 @theme {
   /* Custom colors matching Stitch reference exactly */
   --color-primary: #0f1729;

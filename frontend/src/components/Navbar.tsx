@@ -100,7 +100,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
                         <nav className="hidden md:flex items-center gap-10">
                             <a className="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-slate-100 text-sm font-semibold transition-colors no-underline cursor-pointer" href="#features" onClick={(e) => handleSmoothScroll(e, '#features')}>Features</a>
                             <a className="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-slate-100 text-sm font-semibold transition-colors no-underline cursor-pointer" href="#security" onClick={(e) => handleSmoothScroll(e, '#security')}>Security</a>
-                            <a className="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-slate-100 text-sm font-semibold transition-colors no-underline cursor-pointer" href="#stats" onClick={(e) => handleSmoothScroll(e, '#stats')}>Performance</a>
                         </nav>
                     )}
 
@@ -220,7 +219,6 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout }) => {
                         <>
                             <a className="block px-4 py-2 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 no-underline" href="#features" onClick={(e) => { handleSmoothScroll(e, '#features'); setMobileMenuOpen(false); }}>Features</a>
                             <a className="block px-4 py-2 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 no-underline" href="#security" onClick={(e) => { handleSmoothScroll(e, '#security'); setMobileMenuOpen(false); }}>Security</a>
-                            <a className="block px-4 py-2 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 no-underline" href="#stats" onClick={(e) => { handleSmoothScroll(e, '#stats'); setMobileMenuOpen(false); }}>Performance</a>
                         </>
                     )}
                     {/* C6: Mobile menu also role-aware */}

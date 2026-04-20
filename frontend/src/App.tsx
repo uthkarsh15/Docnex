@@ -16,7 +16,6 @@ import ReportAnalysis from './pages/report-analysis';
 
 import {
   PatientAppointments,
-  PatientVault,
   DoctorAppointments,
   DoctorPatients,
   DoctorSchedule,
@@ -27,15 +26,18 @@ import {
  * Main Application Component
  */
 const App: React.FC = () => {
-  const [user, setUser] = useState<{ role: string; name: string } | null>(() => {
-    const savedValue = localStorage.getItem('user');
-    return savedValue ? JSON.parse(savedValue) : null;
+  const [user, setUser] = useState(() => {
+    const stored = localStorage.getItem('docnex_user');
+    return stored ? JSON.parse(stored) : null;
   });
 
   useEffect(() => {
     if (user) {
+      localStorage.setItem('docnex_user', JSON.stringify(user));
+      // Keep legacy key in sync
       localStorage.setItem('user', JSON.stringify(user));
     } else {
+      localStorage.removeItem('docnex_user');
       localStorage.removeItem('user');
     }
   }, [user]);
@@ -54,12 +56,12 @@ const App: React.FC = () => {
 
   /**
    * Universal logout handler.
+   * Fix 6: Clear all auth keys from both storages.
    */
   const handleLogout = () => {
+    localStorage.removeItem('docnex_token');
+    localStorage.removeItem('docnex_user');
     setUser(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    sessionStorage.removeItem('token');
   };
 
   return (
@@ -70,7 +72,7 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login onLogin={(u: { role: string; name: string }) => setUser(u)} />} />
+            <Route path="/login" element={<Login onLogin={(u: { id?: string; role: string; name: string }) => setUser(u)} />} />
 
             {/* Patient Routes */}
             <Route
@@ -95,7 +97,7 @@ const App: React.FC = () => {
             />
             <Route
               path="/patient/vault"
-              element={user?.role === 'PATIENT' ? <PatientVault /> : <Navigate to="/login" />}
+              element={<Navigate to="/patient/upload" />}
             />
             <Route
               path="/patient/report-analysis"

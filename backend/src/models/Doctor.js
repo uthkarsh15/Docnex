@@ -38,6 +38,10 @@ const doctorSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 0.0
+    },
+    isAIIMS: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
